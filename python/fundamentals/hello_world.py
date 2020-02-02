@@ -14,3 +14,6 @@ food_one = "sushi"
 food_two = "pizza"
 print("I love to eat {} and {}".format(food_one, food_two)) # with .format()
 print(f"I love to eat {food_one} and {food_two}.") # with an f string
+
+def sum(num1, num2):
+    return num1 + num2
