@@ -1,4 +1,7 @@
 
+# Single Linked List
+
+
 class SList:
     def __init__(self):
         self.head = None
@@ -12,19 +15,12 @@ class SList:
         runner = self.head
         new_node = SLNode(val)
 
-        # index and n are the nth element of list
-        # 0 represents the first element
-        # 1: 2nd Element
-        # 2: 3rd Element
-        # 3: ....
-
         while (runner.next.next != None):
             if index == (n - 1):
                 temp = runner.next
                 runner.next = new_node
                 new_node.next = temp
                 break
-
             runner = runner.next
             index += 1
         return self
