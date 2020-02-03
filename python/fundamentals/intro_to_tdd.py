@@ -40,10 +40,16 @@ def coins(cents):
 
 # 4. BONUS - factorial - Write a recursive function that returns the factorial of a given number. Remember that the factorial of a number is the product of all the numbers between 1 and the given number (eg. 4! = 4*3*2*1).
 
-# def factorial(num):
-#     return num if num == 1 else factorial()
+
+def factorial(num):
+    return num if num == 1 else num * factorial(num - 1)
+
 
 # 5. BONUS - fibonacci - Write a recursive function that accepts a number, n, and returns the nth Fibonacci number from the sequence. The first two Fibonacci numbers are 0 and 1. Every number after that is calculated by adding the previous 2 numbers from the sequence. (i.e. 0, 1, 1, 2, 3, 5, 8, 13, 21 ...)
+
+
+def fibonacci(num):
+    return num if num <= 1 else fibonacci(num - 2) + fibonacci(num - 1)
 
 
 class TestingClass(unittest.TestCase):
@@ -64,6 +70,14 @@ class TestingClass(unittest.TestCase):
         self.assertEqual(coins(87), [3, 1, 0, 2])
         # Add at least 5 other test cases
 
+    def test_factorial(self):
+        self.assertEqual(factorial(5), 120)
+        # Add at least 3 test cases
+
+    def test_fibonacci(self):
+        self.assertEqual(fibonacci(5), 5)
+        # Add at least 3 test cases
+
     def setUp(self):
         print("running setUp")
 
@@ -72,5 +86,4 @@ class TestingClass(unittest.TestCase):
 
 
 if __name__ == '__main__':
-    # this runs our tests
-    unittest.main()
+    unittest.main()  # this runs our tests
