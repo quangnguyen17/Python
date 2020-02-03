@@ -7,24 +7,19 @@ class SList:
         if self.head.next == None:
             self.add_to_front(val)
             return self
-
         index = 1
         runner = self.head
         new_node = SLNode(val)
-
         # index and n are the nth element of list
         # 1: 1st Element, 2: 2nd Element
-
         while (index < n):
             if (n - index) == 1:
                 temp = runner.next
                 runner.next = new_node
                 new_node.next = temp
                 break
-
             runner = runner.next
             index += 1
-
         return self
 
     # Adding
