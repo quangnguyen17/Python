@@ -110,7 +110,7 @@ def reverse_list(list):
     for i in range(0, int(len(list) / 2)):
         list[i], list[len(list) - i - 1] = list[len(list) - i - 1], list[i]
 
-    return list
+    return list#
 
 
-print(reverse_list([37, 2, 1, -9]))
+# print(reverse_list([37, 2, 1, -9]))
