@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Display Time</title>
+    {% load static %}
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+</head>
+
+<body>
+    <div class="text-box">
+        <p>The current time and date:</p>
+        <h1>Method 1: { time_1 }}</h1>
+        <h2>Method 2: {{ time_2 }}</h2>
+
+        <h3>Year: {{ year }}</h3>
+        <h4>Month: {{ month }}</h4>
+        <h5>Day: {{ day }}</h5>
+        <h6>Date: {{ date }}</h6>
+    </div>
+
+</body>
+
+</html>
