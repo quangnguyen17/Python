@@ -18,13 +18,14 @@ def paren_valid(str):
     return openings == closings
 
 
-# print(paren_valid("Y(3(p)p(3)r)s"))
-# print(paren_valid("N(0(p)3"))
-# print(paren_valid("N(0)t ) 0( k"))
-# print(paren_valid("a(b))(c"))
+print(paren_valid("Y(3(p)p(3)r)s"))
+print(paren_valid("N(0(p)3"))
+print(paren_valid("N(0)t ) 0( k"))
+print(paren_valid("a(b))(c"))
 
 # Braces Valid
 # Given a sequence of parentheses, braces and brackets, determine whether it is valid.
+
 
 def braces_valid(string):
     openings = []
@@ -33,7 +34,7 @@ def braces_valid(string):
     for char in string:
         if char in dict.values():
             openings.append(char)
-        elif str(char) in dict.keys():
+        elif char in dict.keys():
             if dict[char] == openings[len(openings) - 1]:
                 openings.pop()
             else:
