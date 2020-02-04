@@ -18,7 +18,7 @@ def display_time(request):
         "year": custom_datetime.year,
         "month": custom_datetime.strftime("%B"),
         "day": custom_datetime.strftime("%A"),
-        "date": custom_datetime.strftime("%d")
+        "date": custom_datetime.strftime("%D")
     }
 
     return render(request, "index.html", context)
