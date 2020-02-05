@@ -16,16 +16,19 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path, include
 
+# urlpatterns = [
+#     path('blogs', include('apps.first_app.urls')),
+#     path('surveys', include('apps.surveys.urls')),
+#     path('', include('apps.users.urls')),
+# ]
+
 urlpatterns = [
     path('blogs', include('apps.first_app.urls')),
     path('surveys', include('apps.surveys.urls')),
     path('', include('apps.users.urls')),
+    # path('', include('apps.first_app.urls'))
+    # path('blogs', include('apps.first_app.urls')),
+    # path('surveys', include('apps.surveys.urls')),
+    # path('', include('apps.users.urls')),
+    # path('admin/', admin.site.urls),
 ]
-
-# urlpatterns = [
-# path('', include('apps.first_app.urls'))
-# path('blogs', include('apps.first_app.urls')),
-# path('surveys', include('apps.surveys.urls')),
-# path('', include('apps.users.urls')),
-# path('admin/', admin.site.urls),
-# ]

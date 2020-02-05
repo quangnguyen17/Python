@@ -13,7 +13,7 @@ def login(request):
 
 def users_new(request):
     print("users_new: handling request")
-    return redirect("/regieter")
+    return redirect("/register")
 
 
 def users(request):
