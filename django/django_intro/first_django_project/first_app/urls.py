@@ -1,13 +1,12 @@
 from django.urls import path
 from . import views
 
+# blogs - update the routes as follows (content is the same):
 urlpatterns = [
-    path('', views.index),
-    path('new', views.new),
-    path('create', views.create),
-    path('hello/<str:name>', views.hello),
-    path('<int:number>', views.show),
-    path('<int:number>/edit', views.edit),
-    path('<int:number>/delete', views.destroy),
-    path('delete/<int:id>', views.delete)
+    path('blogs', views.index),
+    path('blogs/new', views.new),
+    path('blogs/create', views.create),
+    path('blogs/<int:number>', views.show),
+    path('blogs/<int:number>/edit', views.edit),
+    path('blogs/<int:number>/delete', views.destroy)
 ]

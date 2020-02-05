@@ -5,24 +5,15 @@ from django.shortcuts import render, HttpResponse, redirect
 
 
 def index(request):
-    # return HttpResponse("placeholder to later display a list of all blogs")
-    return render(request, "index.html")
+    return HttpResponse("placeholder to later display a list of all blogs")
 
 
 def new(request):
     return HttpResponse("placeholder to display a new form to create a new blog")
 
 
-def hello(request, name):
-    context = {
-        "name": name
-    }
-
-    return render(request, "hello.html", context)
-
-
 def create(request):
-    return redirect("/")
+    return redirect("/blogs")
 
 
 def show(request, number):
@@ -34,8 +25,4 @@ def edit(request, number):
 
 
 def destroy(request, number):
-    return redirect("/")
-
-
-def delete(request, id):
-    return redirect(f"/{id}")
+    return redirect("/blogs")
