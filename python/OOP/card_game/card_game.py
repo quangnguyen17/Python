@@ -9,6 +9,7 @@
 # [ ] implement a game
 
 import random
+import player
 
 
 class Card():
@@ -45,11 +46,11 @@ class Deck():
                 # create a card
                 self.cards.append(Card(suit, value))
 
-    def deck_length(self):
-        return len(self.cards)
+    def deck_length(self, addition=0):
+        return len(self.cards) + addition
 
     def shuffle(self):
-        for time in range(random.randint(21, 29)):
+        for time in range(random.randint(5, 10)):
             mid = self.deck_length() / 2
             first_half = self.cards[0: int(mid)]
             second_half = self.cards[int(mid): self.deck_length()]
@@ -63,11 +64,25 @@ class Deck():
 
         return self
 
+    def random_shuffle(self):
+        for time in range(random.randint(self.deck_length(), self.deck_length() * 5)):
+            index_one = random.randint(0, self.deck_length(-1))
+
+            while True:
+                index_two = random.randint(0, self.deck_length(-1))
+                if index_one != index_two:
+                    break
+
+            self.cards[index_one], self.cards[index_two] = self.cards[index_two], self.cards[index_one]
+
+        return self
+
     def sort(self):
         hearts = []
         clubs = []
         diamonds = []
         spades = []
+
         # split deck to 4 suit lists
         for card in self.cards:
             if len(self.cards) == 0:
@@ -82,65 +97,10 @@ class Deck():
                 spades.append(card)
 
         # sort each suit by num
-        sorted = False
-        counter = 0
-        while(sorted == False):
-            min = hearts[counter].value
-            min_idx = 0
-            for idx in range(counter, len(hearts)):
-                if min > hearts[idx].value:
-                    min = hearts[idx].value
-                    min_idx = idx
-                    [hearts[counter].value, hearts[min_idx].value] = [
-                        hearts[min_idx].value, hearts[counter].value]
-            counter += 1
-            if counter == len(hearts):
-                sorted = True
-
-        sorted = False
-        counter = 0
-        while(sorted == False):
-            min = clubs[counter].value
-            min_idx = 0
-            for idx in range(counter, len(clubs)):
-                if min > clubs[idx].value:
-                    min = clubs[idx].value
-                    min_idx = idx
-                    [clubs[counter].value, clubs[min_idx].value] = [
-                        clubs[min_idx].value, clubs[counter].value]
-            counter += 1
-            if counter == len(clubs):
-                sorted = True
-
-        sorted = False
-        counter = 0
-        while(sorted == False):
-            min = diamonds[counter].value
-            min_idx = 0
-            for idx in range(counter, len(diamonds)):
-                if min > diamonds[idx].value:
-                    min = diamonds[idx].value
-                    min_idx = idx
-                    [diamonds[counter].value, diamonds[min_idx].value] = [
-                        diamonds[min_idx].value, diamonds[counter].value]
-            counter += 1
-            if counter == len(diamonds):
-                sorted = True
-
-        sorted = False
-        counter = 0
-        while(sorted == False):
-            min = spades[counter].value
-            min_idx = 0
-            for idx in range(counter, len(spades)):
-                if min > spades[idx].value:
-                    min = spades[idx].value
-                    min_idx = idx
-                    [spades[counter].value, spades[min_idx].value] = [
-                        spades[min_idx].value, spades[counter].value]
-            counter += 1
-            if counter == len(spades):
-                sorted = True
+        hearts = self.sort_suit(hearts)
+        clubs = self.sort_suit(clubs)
+        diamonds = self.sort_suit(diamonds)
+        spades = self.sort_suit(spades)
 
         # stuff 4 suit lists into deck.cards
         self.cards = []
@@ -152,12 +112,27 @@ class Deck():
             self.cards.append(card)
         for card in spades:
             self.cards.append(card)
+
         return self
 
-    def game_poker(self):
+    # helper - given list of cards, sort and return list of cards
+    def sort_suit(self, suit):
+        answer = []
+        while(len(suit) > 0):
+            min_idx = 0
+            for idx in range(len(suit)):
+                if suit[idx].value < suit[min_idx].value:
+                    min_idx = idx
+            answer.append(suit[min_idx])
+            suit.pop(min_idx)
+        return answer
+
+    def game(self):
+
         pass
 
     def game_21(self):
+        is_21 = False
 
         pass
 
@@ -168,6 +143,6 @@ class Deck():
         return self
 
 
-bicycle_deck = Deck().shuffle().show_deck()
-bicycle_deck.sort()
-bicycle_deck.show_deck()
+bicycle_deck = Deck()
+bicycle_deck.shuffle().random_shuffle().show_deck()
+# bicycle_deck.sort().show_deck()
