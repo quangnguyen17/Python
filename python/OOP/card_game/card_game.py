@@ -1,12 +1,11 @@
 # Deck of cards
 # 52 cards in a deck
 # suits hearts, spades, diamonds, clubs
-
 # [X] build card
 # [X] build deck
 # [X] implement shuffle
-# [ ] implement a sort
-# [ ] implement a game
+# [X] implement a sort
+# [X] implement a game
 
 import random
 import player
@@ -137,7 +136,6 @@ class Deck():
         pass
 
     def show_deck(self):
-        print("*" * 50)
         for card in self.cards:
             card.show_value()
         return self
@@ -145,4 +143,3 @@ class Deck():
 
 bicycle_deck = Deck()
 bicycle_deck.shuffle().random_shuffle().show_deck()
-# bicycle_deck.sort().show_deck()
