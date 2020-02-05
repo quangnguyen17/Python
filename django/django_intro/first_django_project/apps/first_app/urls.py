@@ -3,6 +3,7 @@ from . import views
 
 # blogs - update the routes as follows (content is the same):
 urlpatterns = [
+    path('', views.index),
     path('blogs', views.index),
     path('blogs/new', views.new),
     path('blogs/create', views.create),
