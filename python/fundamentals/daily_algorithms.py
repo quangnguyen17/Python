@@ -43,3 +43,35 @@ def braces_valid(string):
 
 
 print(braces_valid("W(a{t}s[o(n{ c}o)m]e )h[e{r}e]!"))
+
+
+def is_palindrome(str):
+    reversed_str = ""
+    for i in range(len(str) - 1, -1, -1):
+        reversed_str += str[i]
+    return str == reversed_str
+
+
+def longest_palindrome(str):
+    palins = []
+    for i in range(len(str)):
+        if i > 0 and i < len(str) - 1:
+            if str[i - 1] == str[i + 1]:
+                p_str = str[i - 1: i + 1]
+                left = i - 1
+                right = i + 1
+                done = True
+
+                while (done):
+                    if done == is_palindrome(p_str):
+                        done = True
+                        break
+                    else:
+                        left -= 1
+                        right += 1
+                        if left < 0 or right > len(str):
+                            break
+                        else:
+                        p_str = str[left: right]
+
+                if done:
