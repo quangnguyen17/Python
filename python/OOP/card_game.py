@@ -158,6 +158,7 @@ class Deck():
         pass
 
     def game_21(self):
+
         pass
 
     def show_deck(self):
