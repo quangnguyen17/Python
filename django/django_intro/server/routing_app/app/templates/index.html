@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    {% load static %}
+</head>
+
+<body>
+    <h1>HAHAHHAHHAHHHAHA!</h1>
+    <h2>Hi! {{ name }}</h2>
+    <h3>Hobbies</h3>
+    <ul>
+        {% for hobby in hobbies %}
+        <li>{{ hobby }}</li>
+        {% endfor %}
+    </ul>
+
+    <ul>
+        {% for user in users %}
+        <li>{{ user }}</li>
+        {% endfor %}
+    </ul>
+
+    <form action="/new" method="POST">
+        {% csrf_token %}
+        <label for="email">Email</label>
+        <input type="email" name="email">
+        <input type="submit">
+    </form>
+</body>
+
+</html>

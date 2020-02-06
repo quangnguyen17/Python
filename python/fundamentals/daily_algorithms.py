@@ -52,26 +52,45 @@ def is_palindrome(str):
     return str == reversed_str
 
 
-def longest_palindrome(str):
-    palins = []
-    for i in range(len(str)):
-        if i > 0 and i < len(str) - 1:
-            if str[i - 1] == str[i + 1]:
-                p_str = str[i - 1: i + 1]
-                left = i - 1
-                right = i + 1
-                done = True
+# def longest_palindrome(str):
+#     palins = []
+#     for i in range(len(str)):
+#         if i > 0 and i < len(str) - 1:
+#             if str[i - 1] == str[i + 1]:
+#                 p_str = str[i - 1: i + 1]
+#                 left = i - 1
+#                 right = i + 1
+#                 done = True
 
-                while (done):
-                    if done == is_palindrome(p_str):
-                        done = True
-                        break
+#                 while (done):
+#                     if done == is_palindrome(p_str):
+#                         done = True
+#                         break
+#                     else:
+#                         left -= 1
+#                         right += 1
+#                         if left < 0 or right > len(str):
+#                             break
+#                         else:
+#                         p_str = str[left: right]
+
+#                 if done:
+
+
+def book_index(list):
+    final_str = ""
+    last_num = 0
+
+    for i in range(len(list)):
+        if i == len(list) - 1:
+            final_str += f"{list[i]}"
+        else:
+            if list[i] > last_num:
+                for x in range(i, len(list) - 1):
+                    if list[x] + 1 == list[x + 1]:
+                        last_num = list[x + 1]
                     else:
-                        left -= 1
-                        right += 1
-                        if left < 0 or right > len(str):
-                            break
-                        else:
-                        p_str = str[left: right]
+                        final_str += f"{list[i]}{("" if last_num < 0 else "-" + str(last_num))}, "
+                        break
 
-                if done:
+    return final_str
