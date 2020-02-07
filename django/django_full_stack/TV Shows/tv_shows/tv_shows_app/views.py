@@ -1,4 +1,5 @@
 from django.shortcuts import render, redirect, HttpResponse
+from django.contrib import messages
 from .models import *
 # Create your views here.
 
@@ -25,13 +26,22 @@ def shows_edit(request, id):
 
 # CRUD Functions
 def add_show(request):
-    title = request.POST['title']
-    network = request.POST['network']
-    release_date = request.POST['release_date']
-    desc = request.POST['desc']
-    Show.objects.create(title=title, network=network,
-                        release_date=release_date, desc=desc)
-    return redirect("/shows")
+    errors = Show.objects.creation_validator(request.POST)
+
+    if len(errors) > 0:
+        for key, val in errors.items():
+            messages.warning(request, val)
+
+        return render(request, "new.html")
+    else:
+        title = request.POST['title']
+        network = request.POST['network']
+        release_date = request.POST['release_date']
+        desc = request.POST['desc']
+        Show.objects.create(title=title, network=network,
+                            release_date=release_date, desc=desc)
+
+        return redirect("/shows")
 
 
 def delete_show(request, id):
@@ -40,15 +50,23 @@ def delete_show(request, id):
 
 
 def save_edit(request, id):
-    title = request.POST['title']
-    network = request.POST['network']
-    release_date = request.POST['release_date']
-    desc = request.POST['desc']
+    errors = Show.objects.creation_validator(request.POST)
 
-    show = Show.objects.all().get(id=id)
-    show.title = title
-    show.network = network
-    show.release_date = release_date
-    show.desc = desc
-    show.save()
-    return redirect("/")
+    if len(errors) > 0:
+        for key, val in errors.items():
+            messages.warning(request, val)
+
+        return redirect(f"shows/{id}/save")
+    else:
+        title = request.POST['title']
+        network = request.POST['network']
+        release_date = request.POST['release_date']
+        desc = request.POST['desc']
+
+        show = Show.objects.all().get(id=id)
+        show.title = title
+        show.network = network
+        show.release_date = release_date
+        show.desc = desc
+        show.save()
+        return redirect("/")
