@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <title>CodingDojo Wall</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand font-weight-bold" href="#">CodingDojo Wall</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item mr-3">
+                    <a class="nav-link text-dark" href="#">Hi, {{ user.first_name }} =))</a>
+                </li>
+                <li class="nav-item">
+                    <a class="btn btn-danger nav-link text-light" href="/success/logout">Log Out</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid pt-0 pb-4">
+        <div class="row p-4">
+            <form class="w-100" action="post_message/{{ user.id }}" method="POST">
+                {% csrf_token %}
+                <h3 class="d-block w-100">Post a message</h3>
+                <textarea class="d-block w-100 form-control mt-2" name="message" id="" cols="30" rows="5"></textarea>
+                <input class="btn btn-primary d-block ml-auto mt-3" type="submit" value="Post a message">
+            </form>
+        </div>
+        <div class="row m-2">
+            <h3>Messages</h3>
+        </div>
+        {% for message in messages %}
+        <div class="row mx-2 border border-secondary p-3 mb-4">
+            <div class="col-12">
+                <h5 class="mt-3">{{ message.user.first_name }} {{ message.user.last_name }} - {{ message.created_at }}
+                </h5>
+                {% if message.user.id == user.id and message.first_30_mins == True %}
+                <form action="delete_message/{{ user.id }}" method="POST">
+                    {% csrf_token %}
+                    <input hidden type="text" name="message_id" value="{{ message.id }}">
+                    <button class="btn btn-danger d-inline-block float-right">Delete Message</button>
+                </form>
+                {% endif %}
+                <p class="d-block font-weight-light">"{{ message.message }}"</p>
+
+            </div>
+            <div class="col-12">
+                {% for comment in message.comments.all %}
+                <h6 class="d-block w-100 mt-3">{{ comment.user.first_name }} {{ comment.user.last_name }} -
+                    {{ comment.created_at }}</h6>
+                <p class="d-block font-weight-light">"{{ comment.comment }}"</p>
+                {% if comment.user.id == user.id %}
+                <form action="delete_comment/{{ user.id }}" method="POST">
+                    {% csrf_token %}
+                    <input hidden type="text" name="comment_id" value="{{ comment.id }}">
+                    <button class="btn btn-danger">Delete Comment</button>
+                </form>
+                {% endif %}
+                {% endfor %}
+            </div>
+            <div class="col-12">
+                <form class="d-block w-100" action="post_comment/{{ user.id }}" method="POST">
+                    {% csrf_token %}
+                    <p class="d-block w-100 mt-3">Post a comment</p>
+                    <input hidden name="message_id" value="{{ message.id }}" type="text">
+                    <textarea class="d-block w-100 form-control mt-1" name="comment" id="" cols="30"
+                        rows="2"></textarea>
+                    <input class="btn btn-warning d-block ml-auto mt-3" type="submit" value="Post a comment">
+                </form>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+</body>
+
+</html>
