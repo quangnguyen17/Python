@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <title>Favorite Books</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand" href="#">Welcome, {{ user.first_name }}!</a>
+        <a href="/books/{{ user.id }}" class="btn btn-success text-light">Back</a>
+    </nav>
+    <div class="container py-5">
+        <div class="row">
+            <div class="col-6">
+                <h1 class="mb-4">{{ book.title }}</h1>
+                <p>Added by: {{ book.uploaded_by.first_name }} {{ book.uploaded_by.last_name }}</p>
+                <p>Added on: {{ book.created_at }}</p>
+                <p>Last updated on: {{ book.updated_at }}</p>
+
+                {% if book.uploaded_by.id == user.id %}
+                <form action="/books/{{ user.id }}/update/book" method="POST">
+                    {% csrf_token %}
+                    <textarea class="d-block w-100 form-control mb-3" name="desc" id="" cols="5"
+                        rows="5">{{ book.desc }}</textarea>
+                    <input hidden name="book_id" type="text" value="{{ book.id }}">
+                    <input class="btn btn-primary mr-1" type="submit" name="update" value="Update">
+                    <input class="btn btn-danger ml-1" type="submit" name="delete" value="Delete">
+                </form>
+                {% else %}
+                <p>Description: {{ book.desc }}</p>
+                {% endif %}
+
+            </div>
+            <div class="col-6">
+                <h1 class="mb-4">Users Who Like This Book:</h1>
+                <ul>
+                    {% for book_user in book.users.all %}
+                    <li>{{ book_user.first_name }} {{ book_user.last_name }}</li>
+                    {% endfor %}
+                </ul>
+
+                {% if user.id != book.uploaded_by.id %}
+                {% if user not in book.users.all %}
+                <form action="/books/preview/favorite" method="POST">
+                    {% csrf_token %}
+                    <input hidden type="text" name="user_id" value="{{ user.id }}">
+                    <input hidden type="text" name="book_id" value="{{ book.id }}">
+                    <input class="btn btn-success" type="submit" value="Add to Favorites">
+                </form>
+                {% endif %}
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>

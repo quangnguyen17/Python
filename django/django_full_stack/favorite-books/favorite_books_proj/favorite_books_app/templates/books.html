@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <title>Books</title>
+</head>
+
+<body>
+    <nav class="navbar navbar-light bg-light">
+        <a class="navbar-brand font-weight-bold" href="#">Welcome, {{ user.first_name }}!</a>
+        <a href="logout" class="btn btn-danger text-light">Log Out</a>
+    </nav>
+    <div class="container py-5">
+        <div class="row align-items-start">
+            <div class="col-5 mr-3 p-5 bg-light text-center rounded">
+                <h1>Add a Favorite Book</h1>
+                <form action="{{ user.id }}/upload" method="POST" class="my-4">
+                    {% csrf_token %}
+                    <div class="form-group row">
+                        <label for="text" class="col-sm-2 col-form-label">Title</label>
+                        <div class="col-sm-10">
+                            <input name="title" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <div class="form-group row mb-4">
+                        <label for="text" class="col-sm-3 col-form-label">Description</label>
+                        <div class="col-sm-9">
+                            <input name="desc" value="(description)" type="text" class="form-control">
+                        </div>
+                    </div>
+                    <input class="btn btn-warning d-block mx-auto" type="submit">
+                </form>
+            </div>
+            <div class="col-5 ml-3">
+                <table class="table table-light">
+                    <thead>
+                        <tr>
+                            <th scope="col">
+                                <h1>All Books</h1>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        {% for book in books %}
+                        <tr>
+                            <th class="font-weight-normal">
+                                <h4><a href="preview/{{ user.id }}/{{ book.id }}">{{ book.title }}</a></h4>
+                                <p>(Uploaded by {{ book.uploaded_by.first_name }} {{ book.uploaded_by.last_name }})</p>
+                                <p class="text-secondary">"{{ book.desc }}"</p>
+
+                                {% if user.id != book.uploaded_by.id %}
+
+                                {% if user not in book.users.all %}
+                                <a href="{{ user.id }}/{{ book.id }}/favorite" class="btn btn-success">Add to
+                                    Favorites</a>
+                                {% endif %}
+
+                                {% if user in book.users.all %}
+                                <p>This is already one of your favorites</p>
+                                {% endif %}
+
+                                {% endif %}
+                            </th>
+                        </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
