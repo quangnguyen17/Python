@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+    <script src="https://code.jquery.com/jquery-3.4.1.slim.min.js"
+        integrity="sha384-J6qa4849blE2+poT4WnyKhv5vZF5SrPo0iEjwBvKU7imGFAV0wwj1yYfoRSJoZ+n"
+        crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js"
+        integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo"
+        crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/js/bootstrap.min.js"
+        integrity="sha384-wfSDF2E50Y2D1uUdj0O3uMBJnjuUD4Ih7YwaYd1iqfktj0Uod8GCExl3Og8ifwB6"
+        crossorigin="anonymous"></script>
+    <title>Book Review</title>
+    <style>
+        ul {
+            list-style-type: none;
+        }
+    </style>
+</head>
+
+<body>
+    <nav class="navbar navbar-expand-md navbar-light bg-light">
+        <a class="navbar-brand" href="#">Welcome, {{ user.first_name }}!</a>
+        <div class="collapse navbar-collapse">
+            <ul class="navbar-nav ml-auto">
+                <li class="nav-item">
+                    <a href="/books/{{ user.id }}">Home</a>
+                </li>
+                <li class="nav-item ml-3">
+                    <a href="/books/logout">Logout</a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+    <div class="container-fluid p-5">
+        <div class="row p-3">
+            <h1 class="d-block w-100">{{ book.title }}</h1>
+            <p>Author: {{ book.author }}</p>
+        </div>
+        <div class="row">
+            <div class="col-6">
+                <h3>Reviews:</h3>
+                <ul class="p-0">
+                    {% for review in book.reviews.all %}
+                    <li class="my-3">
+                        <p>Rating:
+                            {% load my_filters %}
+                            {% for i in review.rating|star_range %}
+                            <span class="text-warning">&#10040;</span>
+                            {% endfor %}
+                        </p>
+                        <p><a href="/books/{{ review.user.id }}/review">{{ review.user.first_name }}</a> says:
+                            {{ review.text }}</p>
+                        <p>Posted on {{ review.created_at }}</p>
+                        <form action="/books/{{ user.id }}/{{ review.id }}/remove_review" method="POST">
+                            {% csrf_token %}
+                            {% if review.user.id == user.id %}
+                            <input type="submit" class="d-block text-right btn btn-danger" value="Remove review">
+                            {% endif %}
+                        </form>
+                    </li>
+                    {% endfor %}
+                </ul>
+            </div>
+            <div class="col-6">
+                <h1>Add review:</h1>
+                <form action="/books/{{ user.id }}/add_review" method="POST">
+                    {% csrf_token %}
+                    <textarea name="review" class="form-control" name="" id="" cols="30" rows="5"></textarea>
+                    <input hidden type="text" name="book_id" value="{{ book.id }}">
+                    <div class="form-group row p-3">
+                        Ratings:
+                        <div class="form-check form-check-inline ml-3">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio1"
+                                value="1">
+                            <label class="form-check-label" for="inlineRadio1">1</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio2"
+                                value="2">
+                            <label class="form-check-label" for="inlineRadio2">2</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+                                value="3">
+                            <label class="form-check-label" for="inlineRadio3">3</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+                                value="4">
+                            <label class="form-check-label" for="inlineRadio4">4</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input class="form-check-input" type="radio" name="inlineRadioOptions" id="inlineRadio3"
+                                value="5">
+                            <label class="form-check-label" for="inlineRadio5">5</label>
+                        </div>
+                    </div>
+                    <input class="btn btn-warning d-block ml-auto" type="submit" value="Submit Review">
+                </form>
+            </div>
+        </div>
+    </div>
+</body>
+
+</html>
